@@ -196,13 +196,14 @@ getECAMECO <- function(url=ECAMECO.env$ameco0_url){
 
   # Read the text files into a list of lists
   AMECO_dataset_raw <- lapply(zipped_files$Name, function(x){
-    read.csv(unz(temp, x), header=TRUE, sep=";", stringsAsFactors = FALSE, check.names = FALSE)
+    read.csv(unz(temp, x), header=TRUE, sep=";", stringsAsFactors = FALSE, check.names = FALSE, na.strings = "NA", strip.white = TRUE)
   })
   names(AMECO_dataset_raw) <- zipped_files$Name
 
   # Flatten the list of lists to a list object
   AMECO_dataset <- do.call("rbind", AMECO_dataset_raw)
   # rownames(AMECO_dataset) <- NULL
+  AMECO_dataset <- AMECO_dataset[,-ncol(AMECO_dataset)]
 
   return(AMECO_dataset)
 }
